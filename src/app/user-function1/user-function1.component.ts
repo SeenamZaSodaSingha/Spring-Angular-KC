@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { NullValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from '../auth.config';
 import { Router } from '@angular/router';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-function1',
   templateUrl: './user-function1.component.html',
   styleUrls: ['./user-function1.component.css']
 })
+// export const header = new HttpHeaders({})
 export class UserFunction1Component {
 
   constructor(private oauthService: OAuthService, private router: Router, private http: HttpClient) {
