@@ -6,6 +6,7 @@ import { PublicFunction1Component } from './public-function1/public-function1.co
 import { PublicPortalComponent } from './public-portal/public-portal.component';
 import { UserFunction1Component } from './user-function1/user-function1.component';
 import { UserPortalComponent } from './user-portal/user-portal.component';
+import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 
 const routes: Routes = [
   { path: '', component: PublicPortalComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'user/func', component: UserFunction1Component },
   { path: 'admin', component: AdminPortalComponent },
   { path: 'admin/func', component: AdminFunction1Component },
+  { path: 'error', component: ErrorHandlerComponent },
 ];
 
 @NgModule({

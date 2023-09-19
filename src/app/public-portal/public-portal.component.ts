@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
-import './public-portal.component.css';
 import { authConfig } from '../auth.config';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 
@@ -24,19 +23,34 @@ export class PublicPortalComponent {
   // In your component class
   goToPublicMenu() {
     // window.location.href = 'http://localhost:8081';
-    this.router.navigate(['']); // Navigate to the admin menu
-    
+    this.http.get('http://localhost:8081/', { observe: 'response' })
+    .subscribe(
+      (response: HttpResponse<any>) => { // Explicitly type the response as HttpResponse<any>
+        // Handle the response from the backend as needed
+        if (response.status === 200) {
+          // If the response status is 200 OK, redirect to a specific Angular route
+          this.router.navigate(['/']); // Replace 'home' with your desired route
+        } else {
+          // Handle other status codes if needed
+          console.error('Received a non-200 status code:', response.status);
+        }
+      },
+      (error) => {
+        // Handle error if needed
+        console.error('An error occurred:', error);
+      }
+    );
   }
 
   goToPublicFunc() {
     // Send a GET request to your backend endpoint
-    this.http.get('http://localhost:8081/', { observe: 'response' })
+    this.http.get('http://localhost:8081/func', { observe: 'response' })
       .subscribe(
         (response: HttpResponse<any>) => { // Explicitly type the response as HttpResponse<any>
           // Handle the response from the backend as needed
           if (response.status === 200) {
             // If the response status is 200 OK, redirect to a specific Angular route
-            this.router.navigate(['/home']); // Replace 'home' with your desired route
+            this.router.navigate(['/func']); // Replace 'home' with your desired route
           } else {
             // Handle other status codes if needed
             console.error('Received a non-200 status code:', response.status);
