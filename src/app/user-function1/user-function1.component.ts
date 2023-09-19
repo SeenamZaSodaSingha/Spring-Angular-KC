@@ -3,6 +3,7 @@ import { NullValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from '../auth.config';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-user-function1',
@@ -11,8 +12,12 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 })
 // export const header = new HttpHeaders({})
 export class UserFunction1Component {
+  authenticated: boolean;
+  role: string;
 
-  constructor(private oauthService: OAuthService, private router: Router, private http: HttpClient) {
+  constructor(private oauthService: OAuthService, private router: Router, private http: HttpClient, private authService: AuthService) {
+    this.authenticated = authService.isAuthenticated();
+    this.role = authService.getUserRole();
     this.configure();
   }
 
@@ -23,7 +28,7 @@ export class UserFunction1Component {
   }
 
   goToUserMenu() {
-    this.http.get('http://localhost:8081/api/v1/user', { observe: 'response' })
+    if (this.authenticated && ((this.role === 'Client-User') || (this.role === 'Client-Admin')))  {this.http.get('http://localhost:8081/api/v1/user', { observe: 'response' })
     .subscribe(
       (response: HttpResponse<any>) => { // Explicitly type the response as HttpResponse<any>
         // Handle the response from the backend as needed
@@ -40,11 +45,14 @@ export class UserFunction1Component {
         // Handle error if needed
         console.error('An error occurred:', error);
       }
-    );
+    );} else {
+      //fix to go to 401
+      this.router.navigate(['/']);
+    }
   }
 
   goToUserFunc() {
-    this.http.get('http://localhost:8081/api/v1/user/func', { observe: 'response' })
+    if (this.authenticated && ((this.role === 'Client-User') || (this.role === 'Client-Admin')))  { this.http.get('http://localhost:8081/api/v1/user/func', { observe: 'response' })
     .subscribe(
       (response: HttpResponse<any>) => { // Explicitly type the response as HttpResponse<any>
         // Handle the response from the backend as needed
@@ -60,10 +68,14 @@ export class UserFunction1Component {
         // Handle error if needed
         console.error('An error occurred:', error);
       }
-    );
+    ); } else {
+      //fix to go to 401
+      this.router.navigate(['/']);
+    }
   }
 
   logout() {
+    this.router.navigate(['/']);
     this.oauthService.logOut();
   }
 }

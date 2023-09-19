@@ -3,6 +3,7 @@ import { NullValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from '../auth.config';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-user-portal',
@@ -10,38 +11,36 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
   styleUrls: ['./user-portal.component.css'],
 })
 export class UserPortalComponent {
+  authenticated: boolean;
+  role: string;
+
   constructor(
     private oauthService: OAuthService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService,
   ) {
+    this.authenticated = authService.isAuthenticated();
+    this.role = authService.getUserRole();
     this.configure();
   }
 
   private configure() {
     this.oauthService.configure(authConfig);
-    // this.oauthService.tokenValidationHandler = new  NullValidationHandler();
-    // this.oauthService.loadDiscoveryDocumentAndTryLogin();
   }
 
   goToUserMenu() {
-    // this.router.navigate(['/user']); // Navigate to the admin menu
-    // this.http.get('http://localhost:8081/api/v1/user', { observe: 'response' }).subscribe();
-    // const headers = new HttpHeaders({
-    //   'Access-Control-Allow-Origin': '*',
-    // });
-    this.http
+    if (this.authenticated && ((this.role === 'Client-User') || (this.role === 'Client-Admin'))) { 
+      console.log("user role is: " + this.role);
+      this.http
       .get('http://localhost:8081/api/v1/user', {
-        // headers,
         observe: 'response',
       })
       .subscribe(
         (response: HttpResponse<any>) => {
-          // Explicitly type the response as HttpResponse<any>
-          // Handle the response from the backend as needed
           if (response.status === 200) {
             // If the response status is 200 OK, redirect to a specific Angular route
-            this.router.navigate(['/user']); // Replace 'home' with your desired route
+            this.router.navigate(['/user']);
           } else {
             // Handle other status codes if needed
             this.router.navigate(['/error']);
@@ -52,14 +51,17 @@ export class UserPortalComponent {
           // Handle error if needed
           console.error('An error occurred:', error);
         }
-      );
+      );} else {
+        //fix to go to 401
+        this.router.navigate(['/']);
+      }
   }
 
   goToUserFunc() {
     // const headers = new HttpHeaders({
     //   'Access-Control-Allow-Origin': '*',
     // });
-    this.http
+    if (this.authenticated && ((this.role === 'Client-User') || (this.role === 'Client-Admin')))  { this.http
       .get('http://localhost:8081/api/v1/user/func', {
         // headers,
         observe: 'response',
@@ -80,10 +82,14 @@ export class UserPortalComponent {
           // Handle error if needed
           console.error('An error occurred:', error);
         }
-      );
+      );} else {
+        //fix to go to 401
+        this.router.navigate(['/']);
+      }
   }
 
   logout() {
+    this.router.navigate(['/']);
     this.oauthService.logOut();
   }
 }
