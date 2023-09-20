@@ -47,7 +47,7 @@ export class AdminFunction1Component {
       }
     );} else {
       //fix to go to 401
-      this.router.navigate(['/']);
+      this.router.navigate(['/unauth']);
     }
   }
 
@@ -71,7 +71,7 @@ export class AdminFunction1Component {
       }
     );} else {
       //fix to go to 401
-      this.router.navigate(['/']);
+      this.router.navigate(['/unauth']);
     }
   }
 
@@ -94,7 +94,7 @@ export class AdminFunction1Component {
       }
     );} else {
       //fix to go to 401
-      this.router.navigate(['/']);
+      this.router.navigate(['/unauth']);
     }
   }
 

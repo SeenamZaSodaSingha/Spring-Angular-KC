@@ -1,21 +1,22 @@
 // auth.guard.ts
 
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private oauthService: OAuthService) {}
 
-  canActivate(): boolean {
-    if (this.authService.isAuthenticated()) {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean  {
+
+    if (this.authService.isAuthenticated() && !this.authService.isAdminRoute(route, state) ) {
       return true;
-    } else {
-      this.router.navigate(['/login']);
-      return false;
-    }
+    } else if (this.authService.isAuthenticated() && this.authService.isAdminRoute(route, state) ){
+      return true;
+    } else return false;
   }
 }

@@ -31,7 +31,11 @@ export class UserPortalComponent {
 
   goToUserMenu() {
     if (this.authenticated && ((this.role === 'Client-User') || (this.role === 'Client-Admin'))) { 
-      console.log("user role is: " + this.role);
+    // const isClientUser: boolean = this.role === 'Client-User';
+    // if (this.authenticated) { 
+    //   console.log("user role is: " + this.role);
+    //   console.log(typeof( this.role.toString()))
+    //   console.log("role compare: " + isClientUser)
       this.http
       .get('http://localhost:8081/api/v1/user', {
         observe: 'response',
@@ -53,7 +57,7 @@ export class UserPortalComponent {
         }
       );} else {
         //fix to go to 401
-        this.router.navigate(['/']);
+        this.router.navigate(['/unauth']);
       }
   }
 
@@ -84,7 +88,7 @@ export class UserPortalComponent {
         }
       );} else {
         //fix to go to 401
-        this.router.navigate(['/']);
+        this.router.navigate(['/unauth']);
       }
   }
 

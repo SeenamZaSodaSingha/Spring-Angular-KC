@@ -25,8 +25,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "src/app/public-portal/public-portal.component.css"
+              "src/styles.css"
             ],
             "scripts": []
           },
