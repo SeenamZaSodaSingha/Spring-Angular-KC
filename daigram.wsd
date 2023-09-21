@@ -1,0 +1,26 @@
+@startuml ClientResourceServerAuthUML
+
+title Client-Resource Server Communication with Keycloak
+
+actor User as User
+participant "Client Application" as Client
+participant "Resource Server" as ResourceServer
+participant "Keycloak Server" as Keycloak
+
+
+User -> Client: Access Application
+Client -> Keycloak: Request Access Token
+Keycloak -> User: Login page
+User -> Keycloak: Enter Credentials
+Keycloak -> Keycloak: Validate Credentials
+Keycloak --> Client: Authorization Code
+Client -> Keycloak: Exchange Code for Token
+Keycloak -> Client: Access Token
+Client -> ResourceServer: Request Resource\n(Authenticated User with Token)
+ResourceServer -> Keycloak: Validate Token
+Keycloak -> Keycloak: Validate Token
+Keycloak --> ResourceServer: Token Validation Result
+ResourceServer --> Client: Resource Data
+Client --> User: Show Resource Data
+
+@enduml
