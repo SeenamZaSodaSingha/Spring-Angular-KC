@@ -17,8 +17,8 @@ const routes: Routes = [
   { path: 'user/func', component: UserFunction1Component, canActivate: [AuthGuard],  data: { isAdminRoute: false } },
   { path: 'admin', component: AdminPortalComponent, canActivate: [AuthGuard],  data: { isAdminRoute: true } },
   { path: 'admin/func', component: AdminFunction1Component,  canActivate: [AuthGuard],  data: { isAdminRoute: true } },
-  { path: 'error', component: ErrorHandlerComponent, canActivate: [AuthGuard] },
-  { path: 'unauth', component: UnauthorizedComponent, canActivate: [AuthGuard] },
+  { path: 'error', component: ErrorHandlerComponent, canActivate: [AuthGuard], data: { isAdminRoute: false }  },
+  { path: 'unauth', component: UnauthorizedComponent },
 ];
 
 @NgModule({
