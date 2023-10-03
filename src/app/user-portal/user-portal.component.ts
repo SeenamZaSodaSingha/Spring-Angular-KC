@@ -13,6 +13,8 @@ import { AuthService } from '../auth.service';
 export class UserPortalComponent {
   authenticated: boolean;
   role: string;
+  menuCnt: number = 0;
+  funcCnt: number = 0;
 
   constructor(
     private oauthService: OAuthService,
@@ -31,63 +33,47 @@ export class UserPortalComponent {
 
   goToUserMenu() {
     if (this.authenticated && ((this.role === 'Client-User') || (this.role === 'Client-Admin'))) { 
-    // const isClientUser: boolean = this.role === 'Client-User';
-    // if (this.authenticated) { 
-    //   console.log("user role is: " + this.role);
-    //   console.log(typeof( this.role.toString()))
-    //   console.log("role compare: " + isClientUser)
       this.http
       .get('http://localhost:8081/api/v1/user', {
         observe: 'response',
       })
       .subscribe(
         (response: HttpResponse<any>) => {
+          this.menuCnt = response.body as number;
           if (response.status === 200) {
-            // If the response status is 200 OK, redirect to a specific Angular route
             this.router.navigate(['/user']);
           } else {
-            // Handle other status codes if needed
             this.router.navigate(['/error']);
             console.error('Received a non-200 status code:', response.status);
           }
         },
         (error) => {
-          // Handle error if needed
           console.error('An error occurred:', error);
         }
       );} else {
-        //fix to go to 401
+
         this.router.navigate(['/unauth']);
       }
   }
 
   goToUserFunc() {
-    // const headers = new HttpHeaders({
-    //   'Access-Control-Allow-Origin': '*',
-    // });
     if (this.authenticated && ((this.role === 'Client-User') || (this.role === 'Client-Admin')))  { this.http
       .get('http://localhost:8081/api/v1/user/func', {
-        // headers,
         observe: 'response',
       })
       .subscribe(
         (response: HttpResponse<any>) => {
-          // Explicitly type the response as HttpResponse<any>
-          // Handle the response from the backend as needed
+          this.funcCnt = response.body as number;
           if (response.status === 200) {
-            // If the response status is 200 OK, redirect to a specific Angular route
-            this.router.navigate(['/user/func']); // Replace 'home' with your desired route
+            this.router.navigate(['/user/func']);
           } else {
-            // Handle other status codes if needed
             console.error('Received a non-200 status code:', response.status);
           }
         },
         (error) => {
-          // Handle error if needed
           console.error('An error occurred:', error);
         }
       );} else {
-        //fix to go to 401
         this.router.navigate(['/unauth']);
       }
   }

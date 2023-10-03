@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { authConfig } from '../auth.config';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-public-portal',
@@ -10,8 +11,11 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
   styleUrls: ['./public-portal.component.css']
 })
 export class PublicPortalComponent {
+  menuCnt: number = 0;
+  funcCnt: number = 0;
 
-  constructor(private oauthService: OAuthService, private router: Router, private http: HttpClient) {
+
+  constructor(private oauthService: OAuthService, private router: Router, private http: HttpClient, private authService: AuthService,) {
     this.configure();
   }
 
@@ -27,6 +31,7 @@ export class PublicPortalComponent {
     .subscribe(
       (response: HttpResponse<any>) => { // Explicitly type the response as HttpResponse<any>
         // Handle the response from the backend as needed
+        this.menuCnt = response.body as number;
         if (response.status === 200) {
           // If the response status is 200 OK, redirect to a specific Angular route
           this.router.navigate(['/']); // Replace 'home' with your desired route
@@ -47,6 +52,7 @@ export class PublicPortalComponent {
     this.http.get('http://localhost:8081/func', { observe: 'response' })
       .subscribe(
         (response: HttpResponse<any>) => { // Explicitly type the response as HttpResponse<any>
+          this.funcCnt = response.body as number;
           // Handle the response from the backend as needed
           if (response.status === 200) {
             // If the response status is 200 OK, redirect to a specific Angular route
@@ -66,5 +72,4 @@ export class PublicPortalComponent {
   login() {
     this.oauthService.initCodeFlow();
   }
-
 }

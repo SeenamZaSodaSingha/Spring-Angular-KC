@@ -1,0 +1,20 @@
+@startuml PKCE_Authentication_Flow
+
+title Proof Key for Code Exchange Authorization Code Flow
+
+actor User
+participant "Client" as Client
+participant "Keycloak Server" as Keycloak
+
+User -> Client: 1. Access the application
+Client -> Keycloak: 2. Authorization Code Request
+Keycloak --> User: 3. Generate Code Verifier and Code Challenge
+Keycloak --> User: 4. Display Login Page
+User -> Keycloak: 5. Enter Username and Password
+Keycloak -> Client: 6. Sent Authorization Code with PKCE
+Client -> Client: 7. Generate Code Verifier and Code Challenge
+Client -> Keycloak: 8. Exchange Code for Access Token with PKCE
+Keycloak --> Client: 9. Return Access Token
+Client --> User: 10. Display Protected Resource
+
+@enduml

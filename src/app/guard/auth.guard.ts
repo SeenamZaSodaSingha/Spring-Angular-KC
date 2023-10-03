@@ -9,44 +9,38 @@ import {
 } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { authConfig } from '../auth.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
+  authenticated: boolean;
   constructor(
     private authService: AuthService,
     private router: Router,
     private oauthService: OAuthService
-  ) {}
+  ) {
+    this.authenticated = authService.isAuthenticated();
+    this.configure();}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
-    const userRole: string = this.authService.getUserRole();
-    if (userRole == null) {
-      this.router.navigate(['/unauth']);
-      return false;
-    }
-    if (
-      route.data['isAdminRoute'] &&
-      this.authService.isAuthenticated() &&
-      userRole === 'Client-Admin'
-    ) {
-      console.log('Route daata: ' + route.data['isAdminRoute']);
-      console.log('User role: ' + userRole);
-      console.log('Auth' + this.authService.isAuthenticated());
-      return true;
-    } else if (
-      this.authService.isAuthenticated() &&
-      !route.data['isAdminRoute']
-    ) {
-      return true;
+  private configure() {
+    this.oauthService.configure(authConfig);
+    this.oauthService.loadDiscoveryDocumentAndTryLogin();
+  }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    if (this.authenticated) {
+      console.log(this.authenticated);
+      console.log('User is authenticated');
+      this.router.navigate(['/']);
+      return true; // User is authenticated, allow access
     } else {
-      this.router.navigate(['/unauth']);
-      console.log('User is not authorized to access this page');
-      return false;
+      console.log('User is not authenticated');
+      console.log(this.authenticated);
+      // User is not authenticated, redirect to the login page
+      this.oauthService.initCodeFlow();
     }
+    return true;
   }
 }
