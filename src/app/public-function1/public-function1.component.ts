@@ -4,18 +4,20 @@ import { authConfig } from '../auth.config';
 import { Router } from '@angular/router';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 
-
 @Component({
   selector: 'app-public-function1',
   templateUrl: './public-function1.component.html',
-  styleUrls: ['./public-function1.component.css']
+  styleUrls: ['./public-function1.component.css'],
 })
 export class PublicFunction1Component {
   menuCnt: number = 0;
   funcCnt: number = 0;
 
-
-  constructor(private oauthService: OAuthService, private router: Router, private http: HttpClient) {
+  constructor(
+    private oauthService: OAuthService,
+    private router: Router,
+    private http: HttpClient
+  ) {
     this.configure();
   }
 
@@ -26,8 +28,7 @@ export class PublicFunction1Component {
 
   // In your component class
   goToPublicMenu() {
-    this.http.get('http://localhost:8081/', { observe: 'response' })
-    .subscribe(
+    this.http.get('http://localhost:8081/', { observe: 'response' }).subscribe(
       (response: HttpResponse<any>) => {
         this.menuCnt = response.body as number;
         if (response.status === 200) {
@@ -43,7 +44,8 @@ export class PublicFunction1Component {
   }
 
   goToPublicFunc() {
-    this.http.get('http://localhost:8081/func', { observe: 'response' })
+    this.http
+      .get('http://localhost:8081/func', { observe: 'response' })
       .subscribe(
         (response: HttpResponse<any>) => {
           this.funcCnt = response.body as number;

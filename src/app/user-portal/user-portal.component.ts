@@ -20,7 +20,7 @@ export class UserPortalComponent {
     private oauthService: OAuthService,
     private router: Router,
     private http: HttpClient,
-    private authService: AuthService,
+    private authService: AuthService
   ) {
     this.authenticated = authService.isAuthenticated();
     this.role = authService.getUserRole();
@@ -32,8 +32,7 @@ export class UserPortalComponent {
   }
 
   goToUserMenu() {
-    if (this.authenticated && ((this.role === 'Client-User') || (this.role === 'Client-Admin'))) { 
-      this.http
+    this.http
       .get('http://localhost:8081/api/v1/user', {
         observe: 'response',
       })
@@ -50,14 +49,11 @@ export class UserPortalComponent {
         (error) => {
           console.error('An error occurred:', error);
         }
-      );} else {
-
-        this.router.navigate(['/unauth']);
-      }
+      );
   }
 
   goToUserFunc() {
-    if (this.authenticated && ((this.role === 'Client-User') || (this.role === 'Client-Admin')))  { this.http
+    this.http
       .get('http://localhost:8081/api/v1/user/func', {
         observe: 'response',
       })
@@ -73,13 +69,11 @@ export class UserPortalComponent {
         (error) => {
           console.error('An error occurred:', error);
         }
-      );} else {
-        this.router.navigate(['/unauth']);
-      }
+      );
   }
 
   logout() {
+    this.authService.logout();
     this.router.navigate(['/']);
-    this.oauthService.logOut();
   }
 }
