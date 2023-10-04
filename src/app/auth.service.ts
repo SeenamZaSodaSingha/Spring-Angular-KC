@@ -26,10 +26,6 @@ export class AuthService {
 
   getUserRole: any = () => {
     const claims: any = this.oauthService.getIdentityClaims();
-    // console.log('claims: ' + claims);
-    //not have role
-    // console.log(claims['resource_access']['springboot-keycloak'] == null);
-    //have role
     if (!claims) {
       return null;
     } if(claims['resource_access']['springboot-keycloak'] == null){
