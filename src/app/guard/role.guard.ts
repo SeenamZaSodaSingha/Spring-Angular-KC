@@ -25,28 +25,22 @@ export class RoleGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean {
     const userRole: string = this.authService.getUserRole();
+    // console.log('User role from ROLE G.: ' + userRole);
+    console.log(route.data ? 'Have roles': 'No roles')
+    const allowRoles: string[] = route.data['allowRoles'];
+    console.log(allowRoles);
     if (userRole == null) {
       this.router.navigate(['/unauth']);
       return false;
     }
-    if (
-      route.data['isAdminRoute'] &&
-      this.authService.isAuthenticated() &&
-      userRole === 'Client-Admin'
-    ) {
-      console.log('Route daata: ' + route.data['isAdminRoute']);
-      console.log('User role: ' + userRole);
-      console.log('Auth' + this.authService.isAuthenticated());
-      return true;
-    } else if (
-      this.authService.isAuthenticated() &&
-      !route.data['isAdminRoute']
-    ) {
-      return true;
-    } else {
-      this.router.navigate(['/unauth']);
-      console.log('User is not authorized to access this page');
-      return false;
-    }
+      const hasAllowedRole = allowRoles.includes(userRole);
+      // console.log('has role: ' + hasAllowedRole);
+      if (hasAllowedRole) {
+        return true;
+      } else { 
+        this.router.navigate(['/unauth']);  
+        return false;
+      }
+    
   }
 }

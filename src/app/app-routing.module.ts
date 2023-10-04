@@ -12,23 +12,56 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RoleGuard } from './guard/role.guard';
 
 const routes: Routes = [
-  
-  { path: '', component: PublicPortalComponent,  canActivate: [AuthGuard],  data: { isAdminRoute: false } },
-  { path: 'func', component: PublicFunction1Component,  canActivate: [AuthGuard],  data: { isAdminRoute: false } },
-  { path: 'user', component: UserPortalComponent, canActivate: [AuthGuard], data: { isAdminRoute: false }},
-  { path: 'user/func', component: UserFunction1Component, canActivate: [ AuthGuard],  data: { isAdminRoute: false } },
-  { path: 'admin', component: AdminPortalComponent, canActivate: [AuthGuard],  data: { isAdminRoute: true } },
-  { path: 'admin/func', component: AdminFunction1Component,  canActivate: [AuthGuard],  data: { isAdminRoute: true } },
-  { path: 'error', component: ErrorHandlerComponent, canActivate: [AuthGuard], data: { isAdminRoute: false }  },
-  { path: 'unauth', component: UnauthorizedComponent,  canActivate: [AuthGuard]},
+  {
+    path: '',
+    component: PublicPortalComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { allowRoles: ['Client-User', 'Client-Admin'] },
+  },
+  {
+    path: 'func',
+    component: PublicFunction1Component,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { allowRoles: ['Client-User', 'Client-Admin'] },
+  },
+  {
+    path: 'user',
+    component: UserPortalComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { allowRoles: ['Client-User', 'Client-Admin'] },
+  },
+  {
+    path: 'user/func',
+    component: UserFunction1Component,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { allowRoles: ['Client-User', 'Client-Admin'] },
+  },
+  {
+    path: 'admin',
+    component: AdminPortalComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { allowRoles: ['Client-Admin'] },
+  },
+  {
+    path: 'admin/func',
+    component: AdminFunction1Component,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { allowRoles: ['Client-Admin'] },
+  },
+  {
+    path: 'error',
+    component: ErrorHandlerComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'unauth',
+    component: UnauthorizedComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
-  // imports: [RouterModule.forRoot(routes, {
-  //   initialNavigation: 'enabledNonBlocking',
-  //   preloadingStrategy: PreloadAllModules
-  // })],
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
