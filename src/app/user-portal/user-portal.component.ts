@@ -3,7 +3,8 @@ import { NullValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from '../auth.config';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
+
 
 @Component({
   selector: 'app-user-portal',
