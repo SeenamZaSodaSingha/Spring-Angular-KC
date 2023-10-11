@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TokenService {
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
   // Retrieve the access token from local storage
   getAccessToken(): string | null {
-    return sessionStorage.getItem('access_token');
+    return sessionStorage.getItem('refresh_token');
   }
 
   // Check if a token is expired
@@ -28,7 +29,9 @@ export class TokenService {
     const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
     console.log('Current Time: ' + currentTime);
     console.log('Token Expire: ' + tokenData.exp);
-    return tokenData.exp < currentTime;
+    if (tokenData.exp < currentTime)
+      {this.authService.logout();}
+      return tokenData.exp < currentTime;
   }
 
   // Helper function to parse a JWT token and extract its payload

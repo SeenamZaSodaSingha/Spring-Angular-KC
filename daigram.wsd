@@ -1,26 +1,25 @@
 @startuml ClientResourceServerAuthUML
 
-title Client-Resource Server Communication with Keycloak
+title PKCE Flow with Resource Server and Keycloak
 
 actor User as User
 participant "Client Application" as Client
-participant "Resource Server" as ResourceServer
 participant "Keycloak Server" as Keycloak
+participant "Resource Server" as ResourceServer
+
 
 
 User -> Client: Access Application
-Client -> Keycloak: Request Access Token
-Keycloak -> User: Login page
-User -> Keycloak: Enter Credentials
+Client -> Client: Generate Code Verifier\nand Code Challenge
+Client -> Keycloak: Authorization Request\n with Code Challenge
+Keycloak -> User: Login page/Authorization Prompt
+User -> Keycloak: Authenticated User with Credentials
 Keycloak -> Keycloak: Validate Credentials
 Keycloak --> Client: Authorization Code
-Client -> Keycloak: Exchange Code for Token
-Keycloak -> Client: Access Token
-Client -> ResourceServer: Request Resource\n(Authenticated User with Token)
-ResourceServer -> Keycloak: Validate Token
-Keycloak -> Keycloak: Validate Token
-Keycloak --> ResourceServer: Token Validation Result
-ResourceServer --> Client: Resource Data
+Client -> Keycloak: Authorization Code\nand Code Verifier
+Keycloak -> Keycloak: Validate Code Verifier and\nCode Challenge
+Keycloak -> Client: ID Token and Access Token
+Client -> ResourceServer: Request Resource with Access Token
 Client --> User: Show Resource Data
 
 @enduml
