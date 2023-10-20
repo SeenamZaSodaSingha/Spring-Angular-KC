@@ -7,8 +7,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthConfig, OAuthModule, OAuthService } from 'angular-oauth2-oidc';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
-// import { initializeKeycloak } from './init/keycloak-init';
-import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 import { AuthGuard } from './guard/auth.guard';
 import { authConfig } from './auth.config';
@@ -17,16 +15,15 @@ export function configureAuth(oauthService: OAuthService) {
 
   oauthService.configure(authConfig);
   oauthService.setupAutomaticSilentRefresh();
-  return () => oauthService.loadDiscoveryDocumentAndLogin();
+  return () => oauthService.loadDiscoveryDocumentAndTryLogin();
 }
 
 @NgModule({
-  declarations: [AppComponent, UnauthorizedComponent, ForbiddenComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    KeycloakAngularModule,
     OAuthModule.forRoot({
       resourceServer: {
         allowedUrls: ['http://localhost:8081/'],

@@ -1,4 +1,4 @@
-// auth.guard.ts
+// role.guard.ts
 
 import { Injectable } from '@angular/core';
 import {
@@ -26,7 +26,6 @@ export class RoleGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean {
     const userRole: string = this.authService.getUserRole();
-    // console.log('User role from ROLE G.: ' + userRole);
     console.log(route.data ? 'Have roles': 'No roles')
     const allowRoles: string[] = route.data['allowRoles'];
     console.log(allowRoles);
@@ -35,13 +34,11 @@ export class RoleGuard implements CanActivate {
       return false;
     }
       const hasAllowedRole = allowRoles.includes(userRole);
-      // console.log('has role: ' + hasAllowedRole);
       if (hasAllowedRole) {
         return true;
       } else { 
         this.router.navigate(['/unauth']);  
         return false;
       }
-    
   }
 }

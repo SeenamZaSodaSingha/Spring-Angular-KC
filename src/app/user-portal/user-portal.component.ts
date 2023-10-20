@@ -12,7 +12,7 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./user-portal.component.css'],
 })
 export class UserPortalComponent {
-  authenticated: boolean;
+  // authenticated: boolean;
   role: string;
   menuCnt: number = 0;
   funcCnt: number = 0;
@@ -23,7 +23,7 @@ export class UserPortalComponent {
     private http: HttpClient,
     private authService: AuthService
   ) {
-    this.authenticated = authService.isAuthenticated();
+    // this.authenticated = authService.isAuthenticated();
     this.role = authService.getUserRole();
     this.configure();
   }
@@ -34,7 +34,7 @@ export class UserPortalComponent {
 
   goToUserMenu() {
     this.http
-      .get('http://localhost:8081/api/v1/user', {
+      .get('http://localhost:8081/user', {
         observe: 'response',
       })
       .subscribe(
@@ -55,7 +55,7 @@ export class UserPortalComponent {
 
   goToUserFunc() {
     this.http
-      .get('http://localhost:8081/api/v1/user/func', {
+      .get('http://localhost:8081/user/func', {
         observe: 'response',
       })
       .subscribe(
@@ -75,6 +75,5 @@ export class UserPortalComponent {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/']);
   }
 }

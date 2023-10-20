@@ -1,0 +1,26 @@
+@startuml normal flow
+
+title Application flow
+
+actor User as User
+participant "Client Application" as Client
+
+User -> Client: Access Application
+User -> Client: Login
+alt Login Success
+alt User have role
+Client -> User: Redirect to public portal
+User -> Client: Request role procted page
+alt Have required role
+Client -> User: Redirect to role protected page
+else Not have required role
+Client -> User: Redirect to unauthorized page
+end
+else User not have role
+Client -> User: Redirect to unauthorized page
+end
+else Login Failure
+Client -> User: Login Failure prompt
+Client -> User: Redirect back to login page
+end
+@enduml

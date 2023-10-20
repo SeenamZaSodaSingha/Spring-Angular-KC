@@ -9,7 +9,7 @@ export class TokenService {
 
   // Retrieve the access token from local storage
   getAccessToken(): string | null {
-    return sessionStorage.getItem('refresh_token');
+    return sessionStorage.getItem('access_token');
   }
 
   // Check if a token is expired

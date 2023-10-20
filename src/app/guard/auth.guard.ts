@@ -33,18 +33,12 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const token = this.tokenService.getAccessToken();
-
-    console.log('Token Expire: ' + this.tokenService.isTokenExpired(token));
-
-    // if (this.authService.isAuthenticated() && !this.tokenService.isTokenExpired(token)) {
+    // if (this.authService.isAuthenticated() && !this.tokenService.isTokenExpired(this.oauthService.getAccessToken())) {
     if (this.authService.isAuthenticated()) {
-      console.log(this.authService.isAuthenticated());
+      // console.log('Session check: ' + this.authService.sessionCheck());
+      // this.authService.sessionCheck();
+    console.log(this.authService.isAuthenticated());
       console.log('User is authenticated');
-      // if(this.tokenService.isTokenExpired(token)){
-      //   this.authService.login();
-      //   return false;
-      // }
       return true;
     } else {
       console.log('User is not authenticated');

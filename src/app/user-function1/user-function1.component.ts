@@ -12,7 +12,7 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./user-function1.component.css'],
 })
 export class UserFunction1Component {
-  authenticated: boolean;
+  // authenticated: boolean;
   role: string;
   menuCnt: number = 0;
   funcCnt: number = 0;
@@ -23,7 +23,7 @@ export class UserFunction1Component {
     private http: HttpClient,
     private authService: AuthService
   ) {
-    this.authenticated = authService.isAuthenticated();
+    // this.authenticated = authService.isAuthenticated();
     this.role = authService.getUserRole();
     this.configure();
   }
@@ -34,7 +34,7 @@ export class UserFunction1Component {
 
   goToUserMenu() {
     this.http
-      .get('http://localhost:8081/api/v1/user', { observe: 'response' })
+      .get('http://localhost:8081/user', { observe: 'response' })
       .subscribe(
         (response: HttpResponse<any>) => {
           this.menuCnt = response.body as number;
@@ -53,7 +53,7 @@ export class UserFunction1Component {
 
   goToUserFunc() {
     this.http
-      .get('http://localhost:8081/api/v1/user/func', { observe: 'response' })
+      .get('http://localhost:8081/user/func', { observe: 'response' })
       .subscribe(
         (response: HttpResponse<any>) => {
           this.funcCnt = response.body as number;
@@ -71,6 +71,5 @@ export class UserFunction1Component {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/']);
   }
 }
