@@ -1,5 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { filter } from 'rxjs/operators'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +10,7 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private oauthService: OAuthService, private router: Router) {}
 
   title = 'spring-kc-frontend';
 
@@ -31,6 +34,6 @@ export class AppComponent {
       console.log('Logging out');
       await this.delay(1000);
       this.authService.logout();
-    }, 600000); // 1 minutes (adjust the duration as needed)
+    }, 60000000); // 1 minutes (adjust the duration as needed)
   }
 }

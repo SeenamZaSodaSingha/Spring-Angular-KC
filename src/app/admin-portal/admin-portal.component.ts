@@ -35,7 +35,7 @@ export class AdminPortalComponent {
   // In your component class
   goToAdminMenu() {
     this.http
-      .get('http://localhost:8081/admin', { observe: 'response' })
+      .get('http://localhost:8081/api/v1/admin', { observe: 'response' })
       .subscribe(
         (response: HttpResponse<any>) => {
           // Explicitly type the response as HttpResponse<any>
@@ -59,7 +59,7 @@ export class AdminPortalComponent {
 
   goToAdminFunc() {
     this.http
-      .get('http://localhost:8081/admin/func', { observe: 'response' })
+      .get('http://localhost:8081/api/v1/admin/func', { observe: 'response' })
       .subscribe(
         (response: HttpResponse<any>) => {
           this.funcCnt = response.body as number;
@@ -79,7 +79,7 @@ export class AdminPortalComponent {
 
   goToUserFunc() {
     this.http
-      .get('http://localhost:8081/user/func', { observe: 'response' })
+      .get('http://localhost:8081/api/v1/user/func', { observe: 'response' })
       .subscribe(
         (response: HttpResponse<any>) => {
           // Explicitly type the response as HttpResponse<any>

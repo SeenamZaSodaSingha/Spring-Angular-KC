@@ -34,7 +34,7 @@ export class UserPortalComponent {
 
   goToUserMenu() {
     this.http
-      .get('http://localhost:8081/user', {
+      .get('http://localhost:8081/api/v1/user', {
         observe: 'response',
       })
       .subscribe(
@@ -55,7 +55,7 @@ export class UserPortalComponent {
 
   goToUserFunc() {
     this.http
-      .get('http://localhost:8081/user/func', {
+      .get('http://localhost:8081/api/v1/user/func', {
         observe: 'response',
       })
       .subscribe(

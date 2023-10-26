@@ -9,6 +9,7 @@ import { UserPortalComponent } from './user-portal/user-portal.component';
 import { AuthGuard } from './guard/auth.guard';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RoleGuard } from './guard/role.guard';
+import { sessionGuard } from './guard/session.guard';
 
 const routes: Routes = [
   {
@@ -36,7 +37,7 @@ const routes: Routes = [
     data: { allowRoles: ['Client-Admin'] },
   },
   {
-    path: 'unauth', component: UnauthorizedComponent, canActivate: [AuthGuard]
+    path: 'unauth', component: UnauthorizedComponent, canActivate: [AuthGuard, sessionGuard]
   },
 ];
 

@@ -8,4 +8,6 @@ export const authConfig: AuthConfig = {
     strictDiscoveryDocumentValidation: true,
     // sessionChecksEnabled: true,
     scope: 'openid profile',
+
+    dummyClientSecret: 'U3k2n9VTPg4YxEXbr1bpqBJ0VYnDTG8B',
 }

@@ -10,6 +10,7 @@ import { map, catchError } from 'rxjs/operators';
 })
 export class AuthService {
   private userInfoUrl = 'http://localhost:8080/realms/enterprise/protocol/openid-connect/userinfo';
+  private authCheckUrl = 'http://localhost:8081/authorized';
 
   constructor(private oauthService: OAuthService, private http: HttpClient) {
     this.oauthService.setupAutomaticSilentRefresh(); // If not already configured
@@ -23,9 +24,13 @@ export class AuthService {
     this.oauthService.revokeTokenAndLogout();
   }
 
-  isAuthenticated(): boolean {
-    console.log('get user info: ' + this.getUserInfo());
-    return this.oauthService.hasValidAccessToken();
+  // isAuthenticated(): boolean {
+  //   console.log('get user info: ' + this.getUserInfo());
+  //   return this.oauthService.hasValidAccessToken();
+  // }
+
+  isAuthenticated() {
+    return this.http.get(this.authCheckUrl, { observe: 'response' });
   }
 
   getUserInfo(): Observable<boolean> {
