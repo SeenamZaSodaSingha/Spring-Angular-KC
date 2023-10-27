@@ -6,8 +6,8 @@ export const authConfig: AuthConfig = {
     clientId: 'Keycloak-Auth',
     responseType: 'code',
     strictDiscoveryDocumentValidation: true,
-    // sessionChecksEnabled: true,
     scope: 'openid profile',
-
+    logoutUrl: 'http://localhost:4200',
+    revocationEndpoint: 'http://localhost:8080/realms/enterprise/protocol/openid-connect/revoke',
     dummyClientSecret: 'U3k2n9VTPg4YxEXbr1bpqBJ0VYnDTG8B',
 }
