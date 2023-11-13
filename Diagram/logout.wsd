@@ -1,0 +1,20 @@
+@startuml normal flow
+
+title Application Logout Flow
+
+actor User as User
+participant "Angular Application" as Client
+participant "Spring Boot Server" as Server
+participant "Keycloak Server" as Keycloak
+
+autonumber
+User -> Client: Press logout button
+Client -> Server: Sent logout request
+Client -> Client: Clear token
+Server -> Keycloak: Sent revoke token request\nand logout request
+Keycloak -> Keycloak: Revoke token and terminate\nuser's current session
+Keycloak -> Server: Sent logout response
+Server -> Client: Redirect to login page
+Client -> User: Render login page
+
+@enduml

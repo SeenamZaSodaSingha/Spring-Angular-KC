@@ -1,0 +1,32 @@
+@startuml normal flow
+
+title Top level application flow
+actor User as User
+participant "Client Application" as Client
+participant "Resource Server" as Server
+participant "Keycloak Server" as Keycloak
+
+autonumber
+User -> Client: Access Application
+Client -> Server: Request protected page
+Server -> Keycloak: Token validation
+Keycloak -> Keycloak: Validate Token
+Keycloak -> Server: Token validation result
+alt Access token is valid
+Server --> Client: Return protected result
+Client --> User: Render protected resource
+else Access token is invalid
+Server -> Keycloak: Request authentication page
+Keycloak -> User: Authtentication page
+User -> Keycloak: Authentication with Credentials or Google SSO
+Keycloak -> Keycloak: Validate Credentials
+Keycloak -> Keycloak: Generate Token
+Keycloak -> Server: Redirect to application with token
+Server -> Keycloak: Token validation
+Keycloak -> Keycloak: Validate Token
+Keycloak -> Server: Token validation result
+Server --> Client: Return protected result
+Client --> User: Render protected resource
+end
+
+@enduml

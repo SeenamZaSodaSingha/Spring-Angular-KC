@@ -1,0 +1,26 @@
+@startuml normal flow
+
+title Auth guard flow
+
+actor User as User
+participant "Application component" as app
+participant "Authentication Guard" as Auth_guard
+participant "Role Guard" as Role_guard
+
+autonumber
+User -> app: Request resource
+app -> Auth_guard: Check if user is authenticated
+Auth_guard -> Auth_guard: Authenticatation check
+alt User is authenticated
+    Auth_guard -> Role_guard: Check if user has role
+    Role_guard -> Role_guard: Role check
+    alt User has role
+        Role_guard -> app: Return resource
+    else User does not have role
+        Role_guard -> app: Return 403 or Redirect to unauthorized page
+    end
+else User is not authenticated
+    Auth_guard -> app: Return 401 or Redirect to login page
+end
+
+@enduml
