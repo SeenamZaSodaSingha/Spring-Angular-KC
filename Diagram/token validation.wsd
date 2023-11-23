@@ -2,11 +2,11 @@
 
 title Token validation Flow
 
-participant "Spring Boot Server" as Server
+participant "Resource Server" as Server
 participant "Keycloak Server" as Keycloak
 
 autonumber
-Server -> Keycloak: Sent introspect request with token\n and basic authentication with client id and secret
+Server -> Keycloak: Sent introspect request with token\n and client credentials
 Keycloak -> Keycloak: Introspect token
 Keycloak -> Server: Introspect result
 

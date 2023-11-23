@@ -9,5 +9,5 @@ export const authConfig: AuthConfig = {
     scope: 'openid profile',
     logoutUrl: 'http://localhost:4200',
     revocationEndpoint: 'http://localhost:8080/realms/enterprise/protocol/openid-connect/revoke',
-    dummyClientSecret: 'U3k2n9VTPg4YxEXbr1bpqBJ0VYnDTG8B',
+    dummyClientSecret: 'xIVAMuVh8PnXX9kGldEPEwGHgwCmTt5U5ndIeQJpCs7clkqJ65noFR5YytGYjToG',
 }

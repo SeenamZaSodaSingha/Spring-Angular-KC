@@ -2,16 +2,19 @@
 
 title Spring Security Filter chain flow
 
-participant "Frontend Application" as angular
+participant "Client Application" as angular
+box Resource Server
 participant "Springboot Application" as spring
 participant "Security Filter Chain" as chain
+end box
 participant "Keycloak Server" as keycloak
 
 autonumber
 angular -> spring: Request resource
 spring -> chain: Request resource
 chain -> keycloak: Validate token
-keycloak -> chain: Token validation status
+keycloak -> keycloak: Token validation
+keycloak -> chain: Token validation result
 alt Token is valid
 chain -> chain: Role claim from JWT Token
 chain -> chain: Match role claim with \nrequest resource permission

@@ -1,11 +1,12 @@
 @startuml normal flow
 
-title Timeout mechanism
+title Idle timeout mechanism
 
 actor User as User
-participant "Application component" as app
+box "Client application"
+participant "Client application" as app
 participant "Timer" as timer
-participant "Keycloak Server" as Keycloak
+
 
 autonumber
 User -> app: User interacts with application
@@ -15,10 +16,12 @@ User -> app: Interact with application
 app -> timer: Reset timer
 else User is idle
 timer -> app: Timeout
+end box
 app -> Keycloak: Logout request
 Keycloak -> Keycloak: Logout user
 Keycloak -> app: Logout response
-app -> user: Redirect to login page
+app -> User: Redirect to login page
+
 end
 
 @enduml

@@ -3,8 +3,8 @@
 title Application Logout Flow
 
 actor User as User
-participant "Angular Application" as Client
-participant "Spring Boot Server" as Server
+participant "Client Application" as Client
+participant "Resource Server" as Server
 participant "Keycloak Server" as Keycloak
 
 autonumber

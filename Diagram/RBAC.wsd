@@ -1,0 +1,33 @@
+@startuml normal flow
+
+title Role-base access control
+
+actor User as User
+participant "Client Application" as angular
+participant "Resource Server" as spring
+participant "Keycloak Server" as keycloak
+
+autonumber
+User -> angular: Access application
+angular -> spring: Request resource \nwith access token
+spring -> keycloak: Validate token
+keycloak -> keycloak: Token validation
+keycloak -> spring: Token validation result
+alt Token is valid
+spring -> spring: Role claim from JWT Token
+spring -> spring: Match role claim with \nrequest resource permission
+alt Role claim matches with \nrequest resource permission
+spring -> spring: Allow route access
+spring --> angular: Response resource
+angular --> User: Render Resource
+else Role claim does not match with \nrequest resource permission
+spring -> spring: Deny route access
+spring -> angular: Response 403 resource
+angular --> User: Render 403 Resource
+end
+else Token is invalid
+spring -> spring: Deny route access
+spring -> angular: Response 401 resource
+angular --> User: Render 401 Resource
+end
+@enduml
